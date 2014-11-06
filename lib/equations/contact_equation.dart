@@ -32,20 +32,21 @@ class ContactEquation extends Equation {
   }
 
   num computeB(num a, num b, num h) {
-    final Body bi = this.bodyA,
-        bj = this.bodyB;
-    final vec2 ri = this.contactPointA,
-        rj = this.contactPointB,
-        xi = bi.position,
-        xj = bj.position;
+    final Body bi = this.bodyA;
+    final Body bj = this.bodyB;
+    final vec2 ri = this.contactPointA;
+    final vec2 xj = bj.position;
+    final vec2 xi = bi.position;
+    final vec2 rj = this.contactPointB;
 
-    final vec2 penetrationVec = this.penetrationVec,
-        n = this.normalA;
+    final vec2 penetrationVec = this.penetrationVec;
+    final vec2 n = this.normalA;
     Float32List G = this.G;
 
     // Caluclate cross products
-    num rixn = vec2.crossLength(ri, n),
-        rjxn = vec2.crossLength(rj, n);
+    num rixn = vec2.crossLength(ri, n);
+    // Caluclate cross products
+    num rjxn = vec2.crossLength(rj, n);
 
     // G = [-n -rixn n rjxn]
     G[0] = -n.x;
@@ -61,7 +62,9 @@ class ContactEquation extends Equation {
     vec2.sub(penetrationVec, penetrationVec, ri);
 
     // Compute iteration
-    num GW, Gq;
+    num GW;
+    // Compute iteration
+    num Gq;
     if (this.firstImpact && this.restitution != 0) {
       Gq = 0;
       GW = (1 / b) * (1 + this.restitution) * this.computeGW();

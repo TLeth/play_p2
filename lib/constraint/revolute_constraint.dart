@@ -1,14 +1,14 @@
 part of p2;
 
-final vec2 worldPivotA = vec2.create(),
-    worldPivotB = vec2.create(),
-    xAxis = vec2.fromValues(1, 0),
-    yAxis = vec2.fromValues(0, 1),
-    g = vec2.create();
+final vec2 worldPivotA = vec2.create();
+final vec2 g = vec2.create();
+final vec2 yAxis = vec2.fromValues(0, 1);
+final vec2 xAxis = vec2.fromValues(1, 0);
+final vec2 worldPivotB = vec2.create();
 
 class RevoluteConstraint extends Constraint {
-  final vec2 pivotA= vec2.create();
-  final vec2 pivotB= vec2.create();
+  final vec2 pivotA = vec2.create();
+  final vec2 pivotB = vec2.create();
 
   Equation motorEquation;
 
@@ -33,8 +33,8 @@ class RevoluteConstraint extends Constraint {
   Equation upperLimitEquation;
   Equation lowerLimitEquation;
 
-  RevoluteConstraint(Body bodyA, Body bodyB, {vec2 worldPivot,vec2 localPivotA,vec2 localPivotB, num maxForce: double.MAX_FINITE, bool collideConnected: true, bool wakeUpBodies: true}) : super(bodyA, bodyB, Constraint.REVOLUTE, collideConnected: collideConnected, wakeUpBodies: wakeUpBodies) {
-    
+  RevoluteConstraint(Body bodyA, Body bodyB, {vec2 worldPivot, vec2 localPivotA, vec2 localPivotB, num maxForce: double.MAX_FINITE, bool collideConnected: true, bool wakeUpBodies: true}) : super(bodyA, bodyB, Constraint.REVOLUTE, collideConnected: collideConnected, wakeUpBodies: wakeUpBodies) {
+
     if (worldPivot != null) {
       // Compute pivotA and pivotB
       vec2.sub(this.pivotA, worldPivot, bodyA.position);
@@ -117,19 +117,19 @@ class RevoluteConstraint extends Constraint {
   }
 
   update() {
-    Body bodyA = this.bodyA,
-        bodyB = this.bodyB;
-    vec2 pivotA = this.pivotA,
-        pivotB = this.pivotB;
+    Body bodyA = this.bodyA;
+    Body bodyB = this.bodyB;
+    vec2 pivotA = this.pivotA;
+    vec2 pivotB = this.pivotB;
     List<Equation> eqs = this.equations;
-    Equation normal = eqs[0],
-        tangent = eqs[1],
-        x = eqs[0],
-        y = eqs[1];
-    num upperLimit = this.upperLimit,
-        lowerLimit = this.lowerLimit;
-    RotationalLockEquation upperLimitEquation = this.upperLimitEquation,
-        lowerLimitEquation = this.lowerLimitEquation;
+    Equation normal = eqs[0];
+    Equation y = eqs[1];
+    Equation x = eqs[0];
+    Equation tangent = eqs[1];
+    num upperLimit = this.upperLimit;
+    num lowerLimit = this.lowerLimit;
+    RotationalLockEquation upperLimitEquation = this.upperLimitEquation;
+    RotationalLockEquation lowerLimitEquation = this.lowerLimitEquation;
 
     num relAngle = this.angle = bodyB.angle - bodyA.angle;
 

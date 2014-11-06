@@ -27,7 +27,7 @@ class Island {
     List<Body> bodies = result == null ? new List<Body>() : result;
     List<Equation> eqs = this.equations;
     bodyIds.clear();
-    
+
     for (int i = 0; i != eqs.length; i++) {
       Equation eq = eqs[i];
       if (!bodyIds.contains(eq.bodyA.id)) {

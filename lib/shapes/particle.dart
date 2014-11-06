@@ -9,11 +9,11 @@ part of p2;
 class Particle extends Shape {
   Particle() : super(Shape.PARTICLE);
 
-  num computeMomentOfInertia (num mass){
+  num computeMomentOfInertia(num mass) {
     return 0; // Can't rotate a particle
   }
 
-  updateBoundingRadius (){
+  updateBoundingRadius() {
     this.boundingRadius = 0;
   }
 
@@ -23,12 +23,12 @@ class Particle extends Shape {
    * @param  {Array}  position
    * @param  {Number} angle
    */
-  computeAABB (AABB out, [vec2 position, num angle]){
+  computeAABB(AABB out, [vec2 position, num angle]) {
     vec2.copy(out.lowerBound, position);
     vec2.copy(out.upperBound, position);
   }
 
-  updateArea(){
-    
+  updateArea() {
+
   }
 }

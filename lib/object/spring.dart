@@ -15,8 +15,8 @@ abstract class Spring {
   Body bodyB;
 
   Object parent;
-  
-  Spring(Body bodyA, Body bodyB, {num stiffness:100, num damping:1}) {
+
+  Spring(Body bodyA, Body bodyB, {num stiffness: 100, num damping: 1}) {
     this.stiffness = stiffness;
 
     this.damping = damping;

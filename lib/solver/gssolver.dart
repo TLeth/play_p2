@@ -57,16 +57,16 @@ class GSSolver extends Solver {
 
     this.sortEquations();
 
-    num iter = 0,
-        maxIter = this.iterations,
-        maxFrictionIter = this.frictionIterations;
+    num iter = 0;
+    num maxFrictionIter = this.frictionIterations;
+    num maxIter = this.iterations;
     List<Equation> equations = this.equations;
-    num Neq = equations.length,
-        tolSquared = pow(this.tolerance * Neq, 2);
+    num Neq = equations.length;
+    num tolSquared = pow(this.tolerance * Neq, 2);
     List<Body> bodies = world.bodies;
     num Nbodies = world.bodies.length;
-    Function add = vec2.add,
-        set = vec2.set;
+    Function add = vec2.add;
+    Function set = vec2.set;
     bool useZeroRHS = this.useZeroRHS;
     Float32List lambda = this.lambda;
 
@@ -88,8 +88,8 @@ class GSSolver extends Solver {
       this.invCs = new Float32List(Neq + this.arrayStep);
     }
     setArrayZero(lambda);
-    Float32List invCs = this.invCs,
-        Bs = this.Bs;
+    Float32List invCs = this.invCs;
+    Float32List Bs = this.Bs;
     lambda = this.lambda;
 
     for (int i = 0; i != equations.length; i++) {
@@ -102,10 +102,12 @@ class GSSolver extends Solver {
       invCs[i] = c.computeInvC(c.epsilon);
     }
 
-    Float32List q, B;
+    Float32List q;
+    Float32List B;
     Equation c;
     num deltalambdaTot;
-    int i, j;
+    int i;
+    int j;
 
     if (Neq != 0) {
 
@@ -194,15 +196,15 @@ class GSSolver extends Solver {
     }
   }
 
-  static num iterateEquation(j, eq,  eps, Bs, invCs, lambda, useZeroRHS, dt, iter) {
+  static num iterateEquation(j, eq, eps, Bs, invCs, lambda, useZeroRHS, dt, iter) {
     // Compute iteration
     num B = Bs[j];
-    num invC = invCs[j],
-        lambdaj = lambda[j],
-        GWlambda = eq.computeGWlambda();
+    num invC = invCs[j];
+    num GWlambda = eq.computeGWlambda();
+    num lambdaj = lambda[j];
 
-    num maxForce = eq.maxForce,
-        minForce = eq.minForce;
+    num maxForce = eq.maxForce;
+    num minForce = eq.minForce;
 
     if (useZeroRHS) {
       B = 0.0;

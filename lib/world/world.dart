@@ -317,11 +317,14 @@ class World extends EventEmitter {
 
   ContactMaterial getContactMaterial(Material materialA, Material materialB) {
     List<ContactMaterial> cmats = this.contactMaterials;
-    for (int i = 0,
-        N = cmats.length; i != N; i++) {
-      ContactMaterial cm = cmats[i];
-      if ((cm.materialA.id == materialA.id) && (cm.materialB.id == materialB.id) || (cm.materialA.id == materialB.id) && (cm.materialB.id == materialA.id)) {
-        return cm;
+    {
+      int i = 0;
+      int N = cmats.length;
+      for ( ; i != N; i++) {
+        ContactMaterial cm = cmats[i];
+        if ((cm.materialA.id == materialA.id) && (cm.materialB.id == materialB.id) || (cm.materialA.id == materialB.id) && (cm.materialB.id == materialA.id)) {
+          return cm;
+        }
       }
     }
     return null;
@@ -341,17 +344,17 @@ class World extends EventEmitter {
     }
   }
 
-  static final vec2 step_r = vec2.create(),
-      step_runit = vec2.create(),
-      step_u = vec2.create(),
-      step_f = vec2.create(),
-      step_fhMinv = vec2.create(),
-      step_velodt = vec2.create(),
-      step_mg = vec2.create(),
-      xiw = vec2.fromValues(0, 0),
-      xjw = vec2.fromValues(0, 0),
-      zero = vec2.fromValues(0, 0),
-      interpvelo = vec2.fromValues(0, 0);
+  static final vec2 step_r = vec2.create();
+  static final vec2 step_runit = vec2.create();
+  static final vec2 step_u = vec2.create();
+  static final vec2 step_f = vec2.create();
+  static final vec2 step_fhMinv = vec2.create();
+  static final vec2 step_velodt = vec2.create();
+  static final vec2 step_mg = vec2.create();
+  static final vec2 xiw = vec2.fromValues(0, 0);
+  static final vec2 xjw = vec2.fromValues(0, 0);
+  static final vec2 zero = vec2.fromValues(0, 0);
+  static final vec2 interpvelo = vec2.fromValues(0, 0);
 
   /**
    * Step the physics world forward in time.
@@ -445,10 +448,12 @@ class World extends EventEmitter {
 //        broadphase = this.broadphase,
     Narrowphase np = this.narrowphase;
 //        constraints = this.constraints,
-    num t0, t1;
-    vec2 fhMinv = step_fhMinv,
-        velodt = step_velodt,
-        mg = step_mg;
+    num t0;
+//        constraints = this.constraints,
+    num t1;
+    vec2 fhMinv = step_fhMinv;
+    vec2 mg = step_mg;
+    vec2 velodt = step_velodt;
 //        scale = vec2.scale,
 //        add = vec2.add,
 //        rotate = vec2.rotate;
@@ -533,34 +538,45 @@ class World extends EventEmitter {
 
     // Narrowphase
     np.reset();
-    for (int i = 0,
-        Nresults = result.length; i != Nresults; i += 2) {
-      Body bi = result[i],
-          bj = result[i + 1];
+    {
+      int i = 0;
+      int Nresults = result.length;
+      for ( ; i != Nresults; i += 2) {
+        Body bi = result[i];
+        Body bj = result[i + 1];
 
-      // Loop over all shapes of body i
-      for (int k = 0,
-          Nshapesi = bi.shapes.length; k != Nshapesi; k++) {
-        Shape si = bi.shapes[k];
-        vec2 xi = bi.shapeOffsets[k];
-        num ai = bi.shapeAngles[k];
 
-        // All shapes of body j
-        for (int l = 0,
-            Nshapesj = bj.shapes.length; l != Nshapesj; l++) {
-          Shape sj = bj.shapes[l];
-          vec2 xj = bj.shapeOffsets[l];
-          num aj = bj.shapeAngles[l];
+        {
+          int k = 0,
+              Nshapesi = bi.shapes.length;
+          // Loop over all shapes of body i
+          for ( ; k != Nshapesi; k++) {
+            Shape si = bi.shapes[k];
+            vec2 xi = bi.shapeOffsets[k];
+            num ai = bi.shapeAngles[k];
 
-          ContactMaterial cm = this.defaultContactMaterial;
-          if (si.material != null && sj.material != null) {
-            ContactMaterial tmp = this.getContactMaterial(si.material, sj.material);
-            if (tmp != null) {
-              cm = tmp;
+
+            {
+              int l = 0,
+                  Nshapesj = bj.shapes.length;
+              // All shapes of body j
+              for ( ; l != Nshapesj; l++) {
+                Shape sj = bj.shapes[l];
+                vec2 xj = bj.shapeOffsets[l];
+                num aj = bj.shapeAngles[l];
+
+                ContactMaterial cm = this.defaultContactMaterial;
+                if (si.material != null && sj.material != null) {
+                  ContactMaterial tmp = this.getContactMaterial(si.material, sj.material);
+                  if (tmp != null) {
+                    cm = tmp;
+                  }
+                }
+
+                this.runNarrowphase(np, bi, si, xi, ai, bj, sj, xj, aj, cm, this.frictionGravity);
+              }
             }
           }
-
-          this.runNarrowphase(np, bi, si, xi, ai, bj, sj, xj, aj, cm, this.frictionGravity);
         }
       }
     }
@@ -720,9 +736,9 @@ class World extends EventEmitter {
 
   static integrateBody(Body body, num dt) {
     num minv = body.invMass;
-    vec2 f = body.force,
-        pos = body.position,
-        velo = body.velocity;
+    vec2 f = body.force;
+    vec2 velo = body.velocity;
+    vec2 pos = body.position;
 
     // Save old position
     vec2.copy(body.previousPosition, body.position);
@@ -1046,9 +1062,33 @@ class World extends EventEmitter {
 //    return world;
 //  }
 
-  static final vec2 hitTest_tmp1 = vec2.create(),
-      hitTest_zero = vec2.fromValues(0, 0),
-      hitTest_tmp2 = vec2.fromValues(0, 0);
+  static final vec2 hitTest_tmp1 = vec2.create();
+//  /**
+//   * Get a copy of this World instance
+//   * @method clone
+//   * @return {World}
+//   */
+//
+//  clone() {
+//    var world = new World();
+//    world.fromJSON(this.toJSON());
+//    return world;
+//  }
+
+  static final vec2 hitTest_zero = vec2.fromValues(0, 0);
+//  /**
+//   * Get a copy of this World instance
+//   * @method clone
+//   * @return {World}
+//   */
+//
+//  clone() {
+//    var world = new World();
+//    world.fromJSON(this.toJSON());
+//    return world;
+//  }
+
+  static final vec2 hitTest_tmp2 = vec2.fromValues(0, 0);
 
   /**
    * Test if a world point overlaps bodies
@@ -1065,35 +1105,42 @@ class World extends EventEmitter {
     // Create a dummy particle body with a particle shape to test against the bodies
     Body pb = new Body(position: worldPoint);
     Particle ps = new Particle();
-    vec2 px = worldPoint,
-        x = hitTest_tmp1,
-        zero = hitTest_zero,
-        tmp = hitTest_tmp2;
+    vec2 px = worldPoint;
+    vec2 tmp = hitTest_tmp2;
+    vec2 zero = hitTest_zero;
+    vec2 x = hitTest_tmp1;
     num pa = 0;
-    
-    
+
+
     pb.addShape(ps);
 
     Narrowphase n = this.narrowphase;
     List<Body> result = new List<Body>();
 
-    // Check bodies
-    for (int i = 0,
-        N = bodies.length; i != N; i++) {
-      Body b = bodies[i];
-      for (int j = 0,
-          NS = b.shapes.length; j != NS; j++) {
-        Shape s = b.shapes[j];
-        vec2 offset = b.shapeOffsets[j] == null ? zero : b.shapeOffsets[j];
-        num angle = b.shapeAngles[j] == null ? 0.0 : b.shapeAngles[j];
 
-        // Get shape world position + angle
-        vec2.rotate(x, offset, b.angle);
-        vec2.add(x, x, b.position);
-        num a = angle + b.angle;
+    {
+      int i = 0,
+          N = bodies.length;
+      // Check bodies
+      for ( ; i != N; i++) {
+        Body b = bodies[i];
+        {
+          int j = 0,
+              NS = b.shapes.length;
+          for ( ; j != NS; j++) {
+            Shape s = b.shapes[j];
+            vec2 offset = b.shapeOffsets[j] == null ? zero : b.shapeOffsets[j];
+            num angle = b.shapeAngles[j] == null ? 0.0 : b.shapeAngles[j];
 
-        if ((s is Circle && n.circleParticle(b, s, x, a, pb, ps, px, pa, true) != 0) || (s is Convex && n.particleConvex(pb, ps, px, pa, b, s, x, a, true) != 0) || (s is Plane && n.particlePlane(pb, ps, px, pa, b, s, x, a, true) != 0) || (s is Capsule && n.particleCapsule(pb, ps, px, pa, b, s, x, a, true) != 0) || (s is Particle && vec2.squaredLength(vec2.sub(tmp, x, worldPoint)) < precision * precision)) {
-          result.add(b);
+            // Get shape world position + angle
+            vec2.rotate(x, offset, b.angle);
+            vec2.add(x, x, b.position);
+            num a = angle + b.angle;
+
+            if ((s is Circle && n.circleParticle(b, s, x, a, pb, ps, px, pa, true) != 0) || (s is Convex && n.particleConvex(pb, ps, px, pa, b, s, x, a, true) != 0) || (s is Plane && n.particlePlane(pb, ps, px, pa, b, s, x, a, true) != 0) || (s is Capsule && n.particleCapsule(pb, ps, px, pa, b, s, x, a, true) != 0) || (s is Particle && vec2.squaredLength(vec2.sub(tmp, x, worldPoint)) < precision * precision)) {
+              result.add(b);
+            }
+          }
         }
       }
     }

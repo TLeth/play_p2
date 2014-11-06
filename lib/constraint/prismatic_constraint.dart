@@ -24,19 +24,19 @@ class PrismaticConstraint extends Constraint {
   num motorSpeed;
 
 
-  PrismaticConstraint(Body bodyA, Body bodyB, {vec2 localAnchorA, vec2 localAnchorB,vec2 localAxisA, bool disableRotationalLock: false, num upperLimit, num lowerLimit, num maxForce: double.MAX_FINITE, bool collideConnected: true, bool wakeUpBodies: true}) : super(bodyA, bodyB, Constraint.PRISMATIC, collideConnected: collideConnected, wakeUpBodies: wakeUpBodies) {
-    if(localAnchorA == null){
-      localAnchorA= new vec2(0.0,0.0);
+  PrismaticConstraint(Body bodyA, Body bodyB, {vec2 localAnchorA, vec2 localAnchorB, vec2 localAxisA, bool disableRotationalLock: false, num upperLimit, num lowerLimit, num maxForce: double.MAX_FINITE, bool collideConnected: true, bool wakeUpBodies: true}) : super(bodyA, bodyB, Constraint.PRISMATIC, collideConnected: collideConnected, wakeUpBodies: wakeUpBodies) {
+    if (localAnchorA == null) {
+      localAnchorA = new vec2(0.0, 0.0);
     }
-    
-    if(localAnchorB == null){
-      localAnchorB= new vec2(0.0,0.0);
+
+    if (localAnchorB == null) {
+      localAnchorB = new vec2(0.0, 0.0);
     }
-    
-    if(localAxisA == null){
-      localAxisA= new vec2(0.0,0.0);
+
+    if (localAxisA == null) {
+      localAxisA = new vec2(0.0, 0.0);
     }
-    
+
     vec2.copy(this.localAnchorA, localAnchorA);
 
     vec2.copy(this.localAnchorB, localAnchorB);
@@ -65,10 +65,10 @@ class PrismaticConstraint extends Constraint {
 
     // Translational part
     Equation trans = new Equation(bodyA, bodyB, -maxForce, maxForce);
-    vec2 ri = vec2.create(),
-        rj = vec2.create(),
-        gg = vec2.create(),
-        t = vec2.create();
+    vec2 ri = vec2.create();
+    vec2 t = vec2.create();
+    vec2 gg = vec2.create();
+    vec2 rj = vec2.create();
     trans.replacedGq = () {
       // g = ( xj + rj - xi - ri ) * t
       return vec2.dot(gg, t);
@@ -170,11 +170,11 @@ class PrismaticConstraint extends Constraint {
       return 0;
     };
     motorEquation.replacedGW = () {
-      Body bi = motorEquation.bodyA,
-          bj = motorEquation.bodyB;
+      Body bi = motorEquation.bodyA;
+      Body bj = motorEquation.bodyB;
       Float32List G = motorEquation.G;
-      vec2 vi = bi.velocity,
-          vj = bj.velocity;
+      vec2 vi = bi.velocity;
+      vec2 vj = bj.velocity;
       num wi = bi.angularVelocity,
           wj = bj.angularVelocity;
       return motorEquation.gmult(G, vi, wi, vj, wj) + this.motorSpeed;
@@ -185,12 +185,12 @@ class PrismaticConstraint extends Constraint {
 
 
 
-  static final vec2 worldAxisA = vec2.create(),
-      worldAnchorA = vec2.create(),
-      worldAnchorB = vec2.create(),
-      orientedAnchorA = vec2.create(),
-      orientedAnchorB = vec2.create(),
-      tmp = vec2.create();
+  static final vec2 worldAxisA = vec2.create();
+  static final vec2 worldAnchorA = vec2.create();
+  static final vec2 worldAnchorB = vec2.create();
+  static final vec2 orientedAnchorA = vec2.create();
+  static final vec2 orientedAnchorB = vec2.create();
+  static final vec2 tmp = vec2.create();
 
   /**
    * Update the constraint equations. Should be done if any of the bodies changed position, before solving.

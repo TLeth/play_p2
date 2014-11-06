@@ -11,17 +11,17 @@ part of p2;
 class Line extends Shape {
   num length;
 
-  Line([this.length=1]) :super(Shape.LINE);
+  Line([this.length = 1]) : super(Shape.LINE);
 
-  num computeMomentOfInertia (num mass){
-    return mass * pow(this.length,2) / 12;
+  num computeMomentOfInertia(num mass) {
+    return mass * pow(this.length, 2) / 12;
   }
 
-  updateBoundingRadius (){
-    this.boundingRadius = this.length/2;
+  updateBoundingRadius() {
+    this.boundingRadius = this.length / 2;
   }
 
-  List<vec2> points = [vec2.create(),vec2.create()];
+  List<vec2> points = [vec2.create(), vec2.create()];
 
   /**
    * @method computeAABB
@@ -29,14 +29,14 @@ class Line extends Shape {
    * @param  {Array}  position
    * @param  {Number} angle
    */
-  computeAABB (AABB out, [vec2 position, num angle]){
+  computeAABB(AABB out, [vec2 position, num angle]) {
     num l2 = this.length / 2;
-    vec2.set(points[0], -l2,  0);
-    vec2.set(points[1],  l2,  0);
-    out.setFromPoints(points,position,angle,0);
+    vec2.set(points[0], -l2, 0);
+    vec2.set(points[1], l2, 0);
+    out.setFromPoints(points, position, angle, 0);
   }
-  
-  updateArea(){
-    
+
+  updateArea() {
+
   }
 }

@@ -129,10 +129,10 @@ class IslandManager {
     // Add connectivity data. Each equation connects 2 bodies.
     for (int k = 0; k != equations.length; k++) {
       Equation eq = equations[k];
-      int i = bodies.indexOf(eq.bodyA),
-          j = bodies.indexOf(eq.bodyB);
-      IslandNode ni = nodes[i],
-          nj = nodes[j];
+      int i = bodies.indexOf(eq.bodyA);
+      int j = bodies.indexOf(eq.bodyB);
+      IslandNode ni = nodes[i];
+      IslandNode nj = nodes[j];
       ni.neighbors.add(nj);
       nj.neighbors.add(ni);
       ni.equations.add(eq);

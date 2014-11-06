@@ -52,31 +52,34 @@ class SAPBroadphase extends Broadphase {
   /// Sorts bodies along an axis.
   static List<Body> sortAxisList(List<Body> a, [num axisIndex = 0]) {
     int j;
-    for (int i = 1,
-        l = a.length; i < l; i++) {
-      Body v = a[i];
-      for (j = i - 1; j >= 0; j--) {
-        if (axisIndex == 0) {
-          if (a[j].aabb.lowerBound.x <= v.aabb.lowerBound.x) {
-            break;
+    {
+      int i = 1;
+      int l = a.length;
+      for ( ; i < l; i++) {
+        Body v = a[i];
+        for (j = i - 1; j >= 0; j--) {
+          if (axisIndex == 0) {
+            if (a[j].aabb.lowerBound.x <= v.aabb.lowerBound.x) {
+              break;
+            }
+          } else {
+            if (a[j].aabb.lowerBound.y <= v.aabb.lowerBound.y) {
+              break;
+            }
           }
-        } else {
-          if (a[j].aabb.lowerBound.y <= v.aabb.lowerBound.y) {
-            break;
-          }
-        }
 
-        a[j + 1] = a[j];
+          a[j + 1] = a[j];
+        }
+        a[j + 1] = v;
       }
-      a[j + 1] = v;
     }
     return a;
   }
 
   /// Get the colliding pairs
   List<Body> getCollisionPairs(World world) {
-    List<Body> bodies = this.axisList,
-        result = this.result;
+    List<Body> bodies = this.axisList;
+    List<Body> result = this.result;
     int axisIndex = this.axisIndex;
 
     result.clear();
@@ -93,30 +96,34 @@ class SAPBroadphase extends Broadphase {
     // Sort the lists
     SAPBroadphase.sortAxisList(bodies, axisIndex);
 
-    // Look through the X list
-    for (int i = 0,
-        N = bodies.length | 0; i != N; i++) {
-      Body bi = bodies[i];
 
-      for (int j = i + 1; j < N; j++) {
-        Body bj = bodies[j];
+    {
+      int i = 0;
+      int N = bodies.length | 0;
+      // Look through the X list
+      for ( ; i != N; i++) {
+        Body bi = bodies[i];
 
-        // Bounds overlap?
+        for (int j = i + 1; j < N; j++) {
+          Body bj = bodies[j];
 
-        bool overlaps;
-        if (axisIndex == 0) {
-          overlaps = (bj.aabb.lowerBound.x <= bi.aabb.upperBound.x);
-        } else {
-          overlaps = (bj.aabb.lowerBound.y <= bi.aabb.upperBound.y);
-        }
+          // Bounds overlap?
+
+          bool overlaps;
+          if (axisIndex == 0) {
+            overlaps = (bj.aabb.lowerBound.x <= bi.aabb.upperBound.x);
+          } else {
+            overlaps = (bj.aabb.lowerBound.y <= bi.aabb.upperBound.y);
+          }
 
 
-        if (!overlaps) {
-          break;
-        }
+          if (!overlaps) {
+            break;
+          }
 
-        if (Broadphase.canCollide(bi, bj) && this.boundingVolumeCheck(bi, bj)) {
-          result.addAll([bi, bj]);
+          if (Broadphase.canCollide(bi, bj) && this.boundingVolumeCheck(bi, bj)) {
+            result.addAll([bi, bj]);
+          }
         }
       }
     }

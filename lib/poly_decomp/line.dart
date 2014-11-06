@@ -10,10 +10,22 @@ class Line {
    * @param  {Number} precision   Precision to use when checking if the lines are parallel
    * @return {Array}              The intersection point.
    */
-  static vec2 lineInt(List<vec2> l1, List<vec2> l2, [num precision=0]) {
+  static vec2 lineInt(List<vec2> l1, List<vec2> l2, [num precision = 0]) {
 
-    vec2 i = new vec2(0.0,0.0); // point
-    num a1, b1, c1, a2, b2, c2, det; // scalars
+    vec2 i = new vec2(0.0, 0.0); // point
+    num a1;
+    // point
+    num det;
+    // point
+    num c2;
+    // point
+    num b2;
+    // point
+    num a2;
+    // point
+    num c1;
+    // point
+    num b1; // scalars
     a1 = l1[1].y - l1[0].y;
     b1 = l1[0].x - l1[1].x;
     c1 = a1 * l1[0].x + b1 * l1[0].y;
@@ -46,8 +58,7 @@ class Line {
     num db = q2.y - q1.y;
 
     // segments are parallel
-    if (da * dy - db * dx == 0)
-      return false;
+    if (da * dy - db * dx == 0) return false;
 
     num s = (dx * (q1.y - p1.y) + dy * (p1.x - q1.x)) / (da * dy - db * dx);
     num t = (da * (p1.y - q1.y) + db * (q1.x - p1.x)) / (db * dx - da * dy);

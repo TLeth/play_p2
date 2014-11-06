@@ -1,7 +1,7 @@
 part of p2;
 
 /// Base class for constraint solvers.
-abstract class Solver extends EventEmitter{
+abstract class Solver extends EventEmitter {
 
   num type;
 
@@ -11,7 +11,7 @@ abstract class Solver extends EventEmitter{
   /// Function that is used to sort all equations before each solve.
   Function equationSortFunction;
 
-  Solver(int type,{Function equationSortFunction}) : super() {
+  Solver(int type, {Function equationSortFunction}) : super() {
     //options = options || {};
 
     //EventEmitter.call(this);
@@ -29,11 +29,11 @@ abstract class Solver extends EventEmitter{
    * @param  {Number} dt
    * @param  {World} world
    */
-  solve (dt,world){
+  solve(dt, world) {
     throw new Exception("Solver.solve should be implemented by subclasses!");
   }
 
-  World mockWorld = new World(fake:true);
+  World mockWorld = new World(fake: true);
 
   /**
    * Solves all constraints in an island.
@@ -41,19 +41,19 @@ abstract class Solver extends EventEmitter{
    * @param  {Number} dt
    * @param  {Island} island
    */
-  solveIsland (dt,island){
+  solveIsland(dt, island) {
 
     this.removeAllEquations();
 
-    if(island.equations.length != null){
+    if (island.equations.length != null) {
       // Add equations to solver
       this.addEquations(island.equations);
       mockWorld.bodies.clear();
       island.getBodies(mockWorld.bodies);
 
       // Solve
-      if(mockWorld.bodies.isNotEmpty){
-        this.solve(dt,mockWorld);
+      if (mockWorld.bodies.isNotEmpty) {
+        this.solve(dt, mockWorld);
       }
     }
   }
@@ -62,8 +62,8 @@ abstract class Solver extends EventEmitter{
    * Sort all equations using the .equationSortFunction. Should be called by subclasses before solving.
    * @method sortEquations
    */
-  sortEquations(){
-    if(this.equationSortFunction != null){
+  sortEquations() {
+    if (this.equationSortFunction != null) {
       this.equations.sort(this.equationSortFunction);
     }
   }
@@ -74,8 +74,8 @@ abstract class Solver extends EventEmitter{
    * @method addEquation
    * @param {Equation} eq
    */
-  addEquation (Equation eq){
-    if(eq.enabled){
+  addEquation(Equation eq) {
+    if (eq.enabled) {
       this.equations.add(eq);
     }
   }
@@ -86,20 +86,25 @@ abstract class Solver extends EventEmitter{
    * @method addEquations
    * @param {Array} eqs
    */
-  addEquations (List<Equation> eqs){
-    //Utils.appendArray(this.equations,eqs);
-    for(int i=0, N=eqs.length; i!=N; i++){
-      Equation eq = eqs[i];
-      if(eq.enabled){
-        this.equations.add(eq);
+  addEquations(List<Equation> eqs) {
+
+    {
+      int i = 0;
+      int N = eqs.length;
+      //Utils.appendArray(this.equations,eqs);
+      for ( ; i != N; i++) {
+        Equation eq = eqs[i];
+        if (eq.enabled) {
+          this.equations.add(eq);
+        }
       }
     }
   }
 
   /// Remove an equation.
-  removeEquation (Equation eq){
+  removeEquation(Equation eq) {
     int i = this.equations.indexOf(eq);
-    if(i != -1){
+    if (i != -1) {
       this.equations.removeAt(i);
     }
   }
@@ -109,7 +114,7 @@ abstract class Solver extends EventEmitter{
    *
    * @method removeAllEquations
    */
-  removeAllEquations(){
+  removeAllEquations() {
     this.equations.clear();
   }
 

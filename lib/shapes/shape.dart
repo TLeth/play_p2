@@ -76,7 +76,7 @@ abstract class Shape {
 
     this.sensor = false;
 
-    
+
   }
 
   /**
@@ -134,7 +134,7 @@ abstract class Shape {
    * @param  {Number} mass
    * @return {Number} If the inertia is infinity or if the object simply isn't possible to rotate, return 0.
    */
-  computeMomentOfInertia (num mass){
+  computeMomentOfInertia(num mass) {
     throw new Exception("Shape.computeMomentOfInertia is not implemented in this Shape...");
   }
 
@@ -143,7 +143,7 @@ abstract class Shape {
    * @method updateBoundingRadius
    * @return {Number}
    */
-  updateBoundingRadius(){
+  updateBoundingRadius() {
     throw new Exception("Shape.updateBoundingRadius is not implemented in this Shape...");
   }
 
@@ -160,5 +160,5 @@ abstract class Shape {
    * @param  {Array}  position
    * @param  {Number} angle
    */
-  computeAABB (AABB out, [vec2 position, num angle]);
+  computeAABB(AABB out, [vec2 position, num angle]);
 }

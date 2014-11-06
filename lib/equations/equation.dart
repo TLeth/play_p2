@@ -92,9 +92,9 @@ class Equation {
 
   /// Compute SPOOK parameters .a, .b and .epsilon according to the current parameters.
   update() {
-    num k = this.stiffness,
-        d = this.relaxation,
-        h = this.timeStep;
+    num k = this.stiffness;
+    num h = this.timeStep;
+    num d = this.relaxation;
 
     this.a = 4.0 / (h * (1 + 4 * d));
     this.b = (4.0 * d) / (1 + 4 * d);
@@ -116,18 +116,18 @@ class Equation {
     return -Gq * a - GW * b - GiMf * h;
   }
 
-  static final vec2 qi = vec2.create(),
-      qj = vec2.create();
+  static final vec2 qi = vec2.create();
+  static final vec2 qj = vec2.create();
 
   /// Computes G\*q, where q are the generalized body coordinates
   num computeGq() {
     Float32List G = this.G;
-    Body bi = this.bodyA,
-        bj = this.bodyB;
-    vec2 xi = bi.position,
-        xj = bj.position;
-    num ai = bi.angle,
-        aj = bj.angle;
+    Body bi = this.bodyA;
+    Body bj = this.bodyB;
+    vec2 xi = bi.position;
+    vec2 xj = bj.position;
+    num ai = bi.angle;
+    num aj = bj.angle;
 
     return this.gmult(G, qi, ai, qj, aj) + this.offset;
   }
@@ -135,43 +135,43 @@ class Equation {
   /// Computes G\*W, where W are the body velocities
   num computeGW() {
     Float32List G = this.G;
-    Body bi = this.bodyA,
-        bj = this.bodyB;
-    vec2 vi = bi.velocity,
-        vj = bj.velocity;
-    num wi = bi.angularVelocity,
-        wj = bj.angularVelocity;
+    Body bi = this.bodyA;
+    Body bj = this.bodyB;
+    vec2 vi = bi.velocity;
+    vec2 vj = bj.velocity;
+    num wi = bi.angularVelocity;
+    num wj = bj.angularVelocity;
     return this.gmult(G, vi, wi, vj, wj) + this.relativeVelocity;
   }
 
   /// Computes G\*Wlambda, where W are the body velocities
   num computeGWlambda() {
-    Body bi = this.bodyA,
-        bj = this.bodyB;
+    Body bi = this.bodyA;
+    Body bj = this.bodyB;
     Float32List G = this.G;
-    vec2 vi = bi.vlambda,
-        vj = bj.vlambda;
-    num wi = bi.wlambda,
-        wj = bj.wlambda;
+    vec2 vi = bi.vlambda;
+    vec2 vj = bj.vlambda;
+    num wi = bi.wlambda;
+    num wj = bj.wlambda;
     return this.gmult(G, vi, wi, vj, wj);
   }
 
 
-  static final vec2 iMfi = vec2.create(),
-      iMfj = vec2.create();
+  static final vec2 iMfi = vec2.create();
+  static final vec2 iMfj = vec2.create();
 
   /// Computes G\*inv(M)\*f, where M is the mass matrix with diagonal blocks for each body, and f are the forces on the bodies.
   num computeGiMf() {
-    Body bi = this.bodyA,
-        bj = this.bodyB;
+    Body bi = this.bodyA;
+    Body bj = this.bodyB;
     vec2 fi = bi.force;
     num ti = bi.angularForce;
     vec2 fj = bj.force;
-    num tj = bj.angularForce,
-        invMassi = bi.invMassSolve,
-        invMassj = bj.invMassSolve,
-        invIi = bi.invInertiaSolve,
-        invIj = bj.invInertiaSolve;
+    num tj = bj.angularForce;
+    num invIj = bj.invInertiaSolve;
+    num invIi = bi.invInertiaSolve;
+    num invMassj = bj.invMassSolve;
+    num invMassi = bi.invMassSolve;
     Float32List G = this.G;
 
     vec2.scale(iMfi, fi, invMassi);
@@ -182,37 +182,37 @@ class Equation {
 
   /// Computes G\*inv(M)\*G'
   num computeGiMGt() {
-    Body bi = this.bodyA,
-        bj = this.bodyB;
-    num invMassi = bi.invMassSolve,
-        invMassj = bj.invMassSolve,
-        invIi = bi.invInertiaSolve,
-        invIj = bj.invInertiaSolve;
+    Body bi = this.bodyA;
+    Body bj = this.bodyB;
+    num invMassi = bi.invMassSolve;
+    num invIj = bj.invInertiaSolve;
+    num invIi = bi.invInertiaSolve;
+    num invMassj = bj.invMassSolve;
     Float32List G = this.G;
 
     return G[0] * G[0] * invMassi + G[1] * G[1] * invMassi + G[2] * G[2] * invIi + G[3] * G[3] * invMassj + G[4] * G[4] * invMassj + G[5] * G[5] * invIj;
   }
 
-  static final vec2 addToWlambda_temp = vec2.create(),
-      addToWlambda_Gi = vec2.create(),
-      addToWlambda_Gj = vec2.create(),
-      addToWlambda_ri = vec2.create(),
-      addToWlambda_rj = vec2.create(),
-      addToWlambda_Mdiag = vec2.create();
+  static final vec2 addToWlambda_temp = vec2.create();
+  static final vec2 addToWlambda_Gi = vec2.create();
+  static final vec2 addToWlambda_Gj = vec2.create();
+  static final vec2 addToWlambda_ri = vec2.create();
+  static final vec2 addToWlambda_rj = vec2.create();
+  static final vec2 addToWlambda_Mdiag = vec2.create();
   //static int count=0;
   /// Add constraint velocity to the bodies.
   addToWlambda(double deltalambda) {
-    Body bi = this.bodyA,
-        bj = this.bodyB;
-    vec2 temp = addToWlambda_temp,
-        Gi = addToWlambda_Gi,
-        Gj = addToWlambda_Gj,
-        ri = addToWlambda_ri,
-        rj = addToWlambda_rj;
-    double invMassi = bi.invMassSolve,
-        invMassj = bj.invMassSolve,
-        invIi = bi.invInertiaSolve,
-        invIj = bj.invInertiaSolve;
+    Body bi = this.bodyA;
+    Body bj = this.bodyB;
+    vec2 temp = addToWlambda_temp;
+    vec2 rj = addToWlambda_rj;
+    vec2 ri = addToWlambda_ri;
+    vec2 Gj = addToWlambda_Gj;
+    vec2 Gi = addToWlambda_Gi;
+    double invMassi = bi.invMassSolve;
+    double invIj = bj.invInertiaSolve;
+    double invIi = bi.invInertiaSolve;
+    double invMassj = bj.invMassSolve;
     vec2 Mdiag = addToWlambda_Mdiag;
     Float32List G = this.G;
 

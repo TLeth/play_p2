@@ -19,7 +19,7 @@ abstract class Constraint {
 
   /// Set to true if you want the connected bodies to collide.
   bool collideConnected;
-  
+
   Object parent;
 
   Constraint(Body bodyA, Body bodyB, num type, {bool collideConnected: true, bool wakeUpBodies: true}) {

@@ -20,8 +20,8 @@ class Rectangle extends Convex {
    * @return {Number}
    */
   num computeMomentOfInertia(num mass) {
-    num w = this.width,
-        h = this.height;
+    num w = this.width;
+    num h = this.height;
     return mass * (h * h + w * w) / 12;
   }
 
@@ -30,15 +30,15 @@ class Rectangle extends Convex {
    * @method updateBoundingRadius
    */
   updateBoundingRadius() {
-    num w = this.width,
-        h = this.height;
+    num w = this.width;
+    num h = this.height;
     this.boundingRadius = sqrt(w * w + h * h) / 2;
   }
 
-  static final vec2 corner1 = vec2.create(),
-      corner2 = vec2.create(),
-      corner3 = vec2.create(),
-      corner4 = vec2.create();
+  static final vec2 corner1 = vec2.create();
+  static final vec2 corner2 = vec2.create();
+  static final vec2 corner3 = vec2.create();
+  static final vec2 corner4 = vec2.create();
 
   /**
    * @method computeAABB

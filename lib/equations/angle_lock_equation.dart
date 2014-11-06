@@ -7,7 +7,7 @@ class AngleLockEquation extends Equation {
   /// The gear ratio.
   num ratio;
 
-  AngleLockEquation(Body bodyA, Body bodyB, {num angle:0, num ratio:1}) : super(bodyA,bodyB) {
+  AngleLockEquation(Body bodyA, Body bodyB, {num angle: 0, num ratio: 1}) : super(bodyA, bodyB) {
     this.angle = angle;
     this.ratio = ratio;
     this.setRatio(this.ratio);

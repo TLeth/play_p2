@@ -53,10 +53,10 @@ class vec2 {
 
   static rotate(vec2 out, vec2 a, num angle) {
     if (angle != 0) {
-      num c = cos(angle),
-          s = sin(angle),
-          x = a.x,
-          y = a.y;
+      num c = cos(angle);
+      num y = a.y;
+      num x = a.x;
+      num s = sin(angle);
       out.x = c * x - s * y;
       out.y = s * x + c * y;
     } else {
@@ -68,8 +68,8 @@ class vec2 {
   /// Rotate a vector 90 degrees clockwise
 
   static rotate90cw(vec2 out, vec2 a) {
-    num x = a.x,
-        y = a.y;
+    num x = a.x;
+    num y = a.y;
     out.x = y;
     out.y = -x;
   }
@@ -102,14 +102,14 @@ class vec2 {
   /// Creates a new, empty vec2
 
   static vec2 create() {
-    vec2 out = new vec2(0.0,0.0);
+    vec2 out = new vec2(0.0, 0.0);
     return out;
   }
 
   /// Creates a new vec2 initialized with values from an existing vector
 
   static vec2 clone(vec2 a) {
-    vec2 out = new vec2(0.0,0.0);
+    vec2 out = new vec2(0.0, 0.0);
     out.x = a.x;
     out.y = a.y;
     return out;
@@ -147,7 +147,7 @@ class vec2 {
   }
 
   static vec2 add2(vec2 out, vec2 a, vec2 b) {
-    
+
     out.x = a.x + b.x;
     out.y = a.y + b.y;
     //print("hi");
@@ -204,8 +204,8 @@ class vec2 {
   /// Calculates the euclidian distance between two vec2's
 
   static num distance(vec2 a, vec2 b) {
-    num x = b.x - a.x,
-        y = b.y - a.y;
+    num x = b.x - a.x;
+    num y = b.y - a.y;
     return sqrt(x * x + y * y);
   }
 
@@ -215,8 +215,8 @@ class vec2 {
   /// Calculates the squared euclidian distance between two vec2's
 
   static num squaredDistance(vec2 a, vec2 b) {
-    num x = b.x - a.x,
-        y = b.y - a.y;
+    num x = b.x - a.x;
+    num y = b.y - a.y;
     return x * x + y * y;
   }
 
@@ -226,8 +226,8 @@ class vec2 {
   /// Calculates the length of a vec2
 
   static num length(vec2 a) {
-    num x = a.x,
-        y = a.y;
+    num x = a.x;
+    num y = a.y;
     return sqrt(x * x + y * y);
   }
 
@@ -237,8 +237,8 @@ class vec2 {
   /// Calculates the squared length of a vec2
 
   static num squaredLength(vec2 a) {
-    num x = a.x,
-        y = a.y;
+    num x = a.x;
+    num y = a.y;
     return x * x + y * y;
   }
 
@@ -256,8 +256,8 @@ class vec2 {
   /// Normalize a vec2
 
   static vec2 normalize(vec2 out, vec2 a) {
-    num x = a.x,
-        y = a.y;
+    num x = a.x;
+    num y = a.y;
     num len = x * x + y * y;
     if (len > 0) {
       //TODO: evaluate use of glm_invsqrt here?

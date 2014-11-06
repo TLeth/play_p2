@@ -1,7 +1,14 @@
 part of p2;
 
 class GridBroadphase extends Broadphase {
-  num xmin, ymin, xmax, ymax, nx, ny, binsizeX, binsizeY;
+  num xmin;
+  num ymin;
+  num xmax;
+  num ymax;
+  num nx;
+  num ny;
+  num binsizeX;
+  num binsizeY;
 
   GridBroadphase({num xmin, num ymin, num xmax, num ymax, num nx, num ny, num binsizeX, num binsizeY}) : super() {
     this.xmin = xmin;
@@ -24,15 +31,15 @@ class GridBroadphase extends Broadphase {
   List<Body> getCollisionPairs(World world) {
     List<Body> result = new List<Body>();
     List<Body> bodies = world.bodies;
-    num Ncolliding = bodies.length,
-        binsizeX = this.binsizeX,
-        binsizeY = this.binsizeY,
-        nx = this.nx,
-        ny = this.ny,
-        xmin = this.xmin,
-        ymin = this.ymin,
-        xmax = this.xmax,
-        ymax = this.ymax;
+    num Ncolliding = bodies.length;
+    num ymax = this.ymax;
+    num xmax = this.xmax;
+    num ymin = this.ymin;
+    num xmin = this.xmin;
+    num ny = this.ny;
+    num nx = this.nx;
+    num binsizeY = this.binsizeY;
+    num binsizeX = this.binsizeX;
 
     // Todo: make garbage free
     List<List<Body>> bins = new List<List<Body>>();
@@ -74,13 +81,16 @@ class GridBroadphase extends Broadphase {
     for (int i = 0; i != Nbins; i++) {
       List<Body> bin = bins[i];
 
-      for (int j = 0,
-          NbodiesInBin = bin.length; j != NbodiesInBin; j++) {
-        Body bi = bin[j];
-        for (int k = 0; k != j; k++) {
-          Body bj = bin[k];
-          if (Broadphase.canCollide(bi, bj) && this.boundingVolumeCheck(bi, bj)) {
-            result.addAll([bi, bj]);
+      {
+        int j = 0,
+            NbodiesInBin = bin.length;
+        for ( ; j != NbodiesInBin; j++) {
+          Body bi = bin[j];
+          for (int k = 0; k != j; k++) {
+            Body bj = bin[k];
+            if (Broadphase.canCollide(bi, bj) && this.boundingVolumeCheck(bi, bj)) {
+              result.addAll([bi, bj]);
+            }
           }
         }
       }

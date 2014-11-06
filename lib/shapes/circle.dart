@@ -3,14 +3,14 @@ part of p2;
 class Circle extends Shape {
   num radius;
 
-  Circle([this.radius=1]): super(Shape.CIRCLE);
+  Circle([this.radius = 1]) : super(Shape.CIRCLE);
 
   /**
    * @method computeMomentOfInertia
    * @param  {Number} mass
    * @return {Number}
    */
-  num computeMomentOfInertia (num mass){
+  num computeMomentOfInertia(num mass) {
     num r = this.radius;
     return mass * r * r / 2;
   }
@@ -19,7 +19,7 @@ class Circle extends Shape {
    * @method updateBoundingRadius
    * @return {Number}
    */
-  updateBoundingRadius (){
+  updateBoundingRadius() {
     this.boundingRadius = this.radius;
   }
 
@@ -27,7 +27,7 @@ class Circle extends Shape {
    * @method updateArea
    * @return {Number}
    */
-  updateArea (){
+  updateArea() {
     this.area = PI * this.radius * this.radius;
   }
 
@@ -37,11 +37,11 @@ class Circle extends Shape {
    * @param  {Array}  position
    * @param  {Number} angle
    */
-  computeAABB (AABB out, [vec2 position, num angle]){
+  computeAABB(AABB out, [vec2 position, num angle]) {
     num r = this.radius;
-    vec2.set(out.upperBound,  r,  r);
+    vec2.set(out.upperBound, r, r);
     vec2.set(out.lowerBound, -r, -r);
-    if(position != null){
+    if (position != null) {
       vec2.add(out.lowerBound, out.lowerBound, position);
       vec2.add(out.upperBound, out.upperBound, position);
     }

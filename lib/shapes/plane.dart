@@ -2,7 +2,7 @@ part of p2;
 
 
 class Plane extends Shape {
-  Plane() :super(Shape.PLANE);
+  Plane() : super(Shape.PLANE);
 
   /**
    * Compute moment of inertia
@@ -36,7 +36,7 @@ class Plane extends Shape {
     if (angle is num) {
       a = angle % (2 * PI);
     }
-    
+
     if (a == 0) {
       // y goes from -inf to 0
       vec2.set(out.lowerBound, -double.MAX_FINITE, -double.MAX_FINITE);

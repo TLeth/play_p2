@@ -2,13 +2,13 @@ part of p2;
 
 class FrictionEquation extends Equation {
   /// Relative vector from center of body A to the contact point, world oriented.
-  final vec2 contactPointA= vec2.create();
+  final vec2 contactPointA = vec2.create();
 
   /// Relative vector from center of body B to the contact point, world oriented.
-  final vec2 contactPointB= vec2.create();
+  final vec2 contactPointB = vec2.create();
 
   /// Tangent vector that the friction force will act along. World oriented.
-  final vec2 t= vec2.create();
+  final vec2 t = vec2.create();
 
   /// A ContactEquation connected to this friction. The contact equations can be used to rescale the max force for the friction. If more than one contact equation is given, then the max force can be set to the average.
   List<ContactEquation> contactEquations;
@@ -42,11 +42,11 @@ class FrictionEquation extends Equation {
 
 
   num computeB(num a, num b, num h) {
-    final Body bi = this.bodyA,
-        bj = this.bodyB;
-    final vec2 ri = this.contactPointA,
-        rj = this.contactPointB,
-        t = this.t;
+    final Body bi = this.bodyA;
+    final Body bj = this.bodyB;
+    final vec2 ri = this.contactPointA;
+    final vec2 t = this.t;
+    final vec2 rj = this.contactPointB;
     final Float32List G = this.G;
 
     // G = [-t -rixt t rjxt]
@@ -58,8 +58,8 @@ class FrictionEquation extends Equation {
     G[4] = t.y;
     G[5] = vec2.crossLength(rj, t);
 
-    num GW = this.computeGW(),
-        GiMf = this.computeGiMf();
+    num GW = this.computeGW();
+    num GiMf = this.computeGiMf();
 
     num B = /* - g * a  */ -GW * b - h * GiMf;
 

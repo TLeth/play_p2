@@ -5,8 +5,7 @@ class Polyk {
     if (p.length < 6) return 0;
     int l = p.length - 2;
     num sum = 0;
-    for (int i = 0; i < l; i += 2)
-      sum += (p[i + 2] - p[i]) * (p[i + 1] + p[i + 3]);
+    for (int i = 0; i < l; i += 2) sum += (p[i + 2] - p[i]) * (p[i + 1] + p[i + 3]);
     sum += (p[0] - p[l]) * (p[l + 1] + p[1]);
     return -sum * 0.5;
   }
@@ -16,8 +15,7 @@ class Polyk {
     if (n < 3) return new List(0);
     List tgs = new List();
     List avl = new List();
-    for (int i = 0; i < n; i++)
-      avl.add(i);
+    for (int i = 0; i < n; i++) avl.add(i);
 
     int i = 0;
     int al = n;
@@ -26,9 +24,12 @@ class Polyk {
       int i1 = avl[(i + 1) % al];
       int i2 = avl[(i + 2) % al];
 
-      num ax = p[2 * i0], ay = p[2 * i0 + 1];
-      num bx = p[2 * i1], by = p[2 * i1 + 1];
-      num cx = p[2 * i2], cy = p[2 * i2 + 1];
+      num ax = p[2 * i0];
+      num ay = p[2 * i0 + 1];
+      num bx = p[2 * i1];
+      num by = p[2 * i1 + 1];
+      num cx = p[2 * i2];
+      num cy = p[2 * i2 + 1];
 
       bool earFound = false;
       if (Polyk._convex(ax, ay, bx, by, cx, cy)) {
@@ -47,8 +48,7 @@ class Polyk {
         avl.removeAt((i + 1) % al);
         al--;
         i = 0;
-      }
-      else if (i++ > 3 * al) break;
+      } else if (i++ > 3 * al) break;
       // no convex angles :(
     }
     tgs.addAll([avl[0], avl[1], avl[2]]);

@@ -32,9 +32,11 @@ class DistanceConstraint extends Constraint {
 
     if (this.distance == null) {
 // Use the current world distance between the world anchor points.
-      vec2 worldAnchorA = vec2.create(),
-          worldAnchorB = vec2.create(),
-          r = vec2.create();
+      vec2 worldAnchorA = vec2.create();
+// Use the current world distance between the world anchor points.
+      vec2 r = vec2.create();
+// Use the current world distance between the world anchor points.
+      vec2 worldAnchorB = vec2.create();
 
       // Transform local anchors to world
       vec2.rotate(worldAnchorA, localAnchorA, bodyA.angle);
@@ -75,10 +77,10 @@ class DistanceConstraint extends Constraint {
     final vec2 rj = vec2.create(); // worldAnchorB
 
     normal.replacedGq = () {
-      Body bodyA = this.bodyA,
-          bodyB = this.bodyB;
-      vec2 xi = bodyA.position,
-          xj = bodyB.position;
+      Body bodyA = this.bodyA;
+      Body bodyB = this.bodyB;
+      vec2 xi = bodyA.position;
+      vec2 xj = bodyB.position;
 
       // Transform local anchors to world
       vec2.rotate(ri, localAnchorA, bodyA.angle);
@@ -116,11 +118,11 @@ class DistanceConstraint extends Constraint {
   static final vec2 rj = vec2.create(); // worldAnchorB
   update() {
     Equation normal = this.equations[0];
-    Body bodyA = this.bodyA,
-        bodyB = this.bodyB;
+    Body bodyA = this.bodyA;
+    Body bodyB = this.bodyB;
     num distance = this.distance;
-    vec2 xi = bodyA.position,
-        xj = bodyB.position;
+    vec2 xi = bodyA.position;
+    vec2 xj = bodyB.position;
     Equation normalEquation = this.equations[0];
     Float32List G = normal.G;
 
@@ -164,8 +166,9 @@ class DistanceConstraint extends Constraint {
     vec2.normalize(n, n);
 
     // Caluclate cross products
-    num rixn = vec2.crossLength(ri, n),
-        rjxn = vec2.crossLength(rj, n);
+    num rixn = vec2.crossLength(ri, n);
+    // Caluclate cross products
+    num rjxn = vec2.crossLength(rj, n);
 
     // G = [-n -rixn n rjxn]
     G[0] = -n.x;

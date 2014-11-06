@@ -151,8 +151,8 @@ class OverlapKeeper {
   }
 
   isNewOverlap(Shape shapeA, Shape shapeB) {
-    int idA = shapeA.id | 0,
-        idB = shapeB.id | 0;
+    int idA = shapeA.id | 0;
+    int idB = shapeB.id | 0;
     TupleDictionary<OverlapKeeperRecord> last = this.overlappingShapesLastState;
     TupleDictionary<OverlapKeeperRecord> current = this.overlappingShapesCurrentState;
     // Not in last but in new

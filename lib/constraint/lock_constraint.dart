@@ -6,12 +6,12 @@ class LockConstraint extends Constraint {
 
 
   LockConstraint(Body bodyA, Body bodyB, {num angle, num ratio: 1, vec2 localOffsetB, num localAngleB, num maxForce: double.MAX_FINITE, bool collideConnected: true, bool wakeUpBodies: true}) : super(bodyA, bodyB, Constraint.LOCK, collideConnected: collideConnected, wakeUpBodies: wakeUpBodies) {
-    Equation x = new Equation(bodyA, bodyB, -maxForce, maxForce),
-        y = new Equation(bodyA, bodyB, -maxForce, maxForce),
-        rot = new Equation(bodyA, bodyB, -maxForce, maxForce);
+    Equation x = new Equation(bodyA, bodyB, -maxForce, maxForce);
+    Equation rot = new Equation(bodyA, bodyB, -maxForce, maxForce);
+    Equation y = new Equation(bodyA, bodyB, -maxForce, maxForce);
 
-    vec2 l = vec2.create(),
-        g = vec2.create();
+    vec2 l = vec2.create();
+    vec2 g = vec2.create();
     x.replacedGq = () {
       vec2.rotate(l, this.localOffsetB, bodyA.angle);
       vec2.sub(g, bodyB.position, bodyA.position);
@@ -24,8 +24,8 @@ class LockConstraint extends Constraint {
       vec2.sub(g, g, l);
       return g.y;
     };
-    vec2 r = vec2.create(),
-        t = vec2.create();
+    vec2 r = vec2.create();
+    vec2 t = vec2.create();
     rot.replacedGq = () {
       vec2.rotate(r, this.localOffsetB, bodyB.angle - this.localAngleB);
       vec2.scale(r, r, -1.0);
@@ -92,11 +92,11 @@ class LockConstraint extends Constraint {
   final vec2 xAxis = vec2.fromValues(1, 0);
   final vec2 yAxis = vec2.fromValues(0, 1);
   update() {
-    Equation x = this.equations[0],
-        y = this.equations[1],
-        rot = this.equations[2];
-    Body    bodyA = this.bodyA,
-        bodyB = this.bodyB;
+    Equation x = this.equations[0];
+    Equation rot = this.equations[2];
+    Equation y = this.equations[1];
+    Body bodyA = this.bodyA;
+    Body bodyB = this.bodyB;
 
     vec2.rotate(l, this.localOffsetB, bodyA.angle);
     vec2.rotate(r, this.localOffsetB, bodyB.angle - this.localAngleB);

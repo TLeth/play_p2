@@ -9,7 +9,7 @@ class IslandNode {
   final List<IslandNode> neighbors = new List<IslandNode>();
 
   /// Equations connected to this node.
-  final List<Equation> equations= new List<Equation>();
+  final List<Equation> equations = new List<Equation>();
 
   /// If this node was visiting during the graph traversal.
   bool visited = false;

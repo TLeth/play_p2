@@ -45,7 +45,7 @@ class Body extends EventEmitter {
    * The shapes of the body. The local transform of the shape in .shapes[i] is
    * defined by .shapeOffsets[i] and .shapeAngles[i].
    */
-  final List<Shape> shapes= new List<Shape>();
+  final List<Shape> shapes = new List<Shape>();
 
   /**
    * The local shape offsets, relative to the body center of mass. This is an
@@ -80,25 +80,25 @@ class Body extends EventEmitter {
   bool fixedRotation;
 
   /// The position of the body
-  final vec2 position= vec2.create();
+  final vec2 position = vec2.create();
 
   /// The interpolated position of the body.
-  final vec2 interpolatedPosition= vec2.create();
+  final vec2 interpolatedPosition = vec2.create();
 
   /// The interpolated angle of the body.
   num interpolatedAngle;
 
   /// The previous position of the body.
-  final vec2 previousPosition= vec2.create();
+  final vec2 previousPosition = vec2.create();
 
   /// The previous angle of the body.
   num previousAngle;
 
   /// The velocity of the body
-  final vec2 velocity= vec2.create();
+  final vec2 velocity = vec2.create();
 
   /// Constraint velocity that was added to the body during the last step.
-  final vec2 vlambda= vec2.create();
+  final vec2 vlambda = vec2.create();
 
   /// Angular constraint velocity that was added to the body during last step.
   double wlambda = 0.0;
@@ -142,7 +142,7 @@ class Body extends EventEmitter {
    *         world.step(1/60);
    *     }
    */
-  final vec2 force= vec2.create();
+  final vec2 force = vec2.create();
 
   /// The angular force acting on the body.
   double angularForce;
@@ -182,7 +182,7 @@ class Body extends EventEmitter {
    *         type: Body.KINEMATIC // Type can be set via the options object.
    *     });
    */
-  int type=0;
+  int type = 0;
 
 
   /// Bounding circle radius.
@@ -248,7 +248,7 @@ class Body extends EventEmitter {
 
   Object parent;
 
-  Body({int type, num mass: 0.0, vec2 position, vec2 velocity, num angle: 0.0, num angularVelocity: 0.0,  vec2 force, num angularForce: 0.0, bool fixedRotation: false, num damping: 0.1, num angularDamping: 0.1}) : super() {
+  Body({int type, num mass: 0.0, vec2 position, vec2 velocity, num angle: 0.0, num angularVelocity: 0.0, vec2 force, num angularForce: 0.0, bool fixedRotation: false, num damping: 0.1, num angularDamping: 0.1}) : super() {
 
     this.id = ++Body._idCounter;
 
@@ -602,8 +602,8 @@ class Body extends EventEmitter {
 
     for (int i = 0; i != N; i++) {
       Shape shape = shapes[i];
-      num offset = vec2.length(shapeOffsets[i]),
-          r = shape.boundingRadius;
+      num offset = vec2.length(shapeOffsets[i]);
+      num r = shape.boundingRadius;
       if (offset + r > radius) {
         radius = offset + r;
       }
@@ -698,14 +698,14 @@ class Body extends EventEmitter {
 
       List<Shape> shapes = this.shapes;
       int N = shapes.length;
-      double m = this.mass / N,
-          I = 0.0;
+      double m = this.mass / N;
+      double I = 0.0;
 
       if (!this.fixedRotation) {
         for (int i = 0; i < N; i++) {
           Shape shape = shapes[i];
-          num r2 = vec2.squaredLength(this.shapeOffsets[i]),
-              Icm = shape.computeMomentOfInertia(m);
+          num r2 = vec2.squaredLength(this.shapeOffsets[i]);
+          num Icm = shape.computeMomentOfInertia(m);
           I += Icm + m * r2;
         }
         this.inertia = I;
@@ -851,10 +851,10 @@ class Body extends EventEmitter {
     return true;
   }
 
-  static final vec2 adjustCenterOfMass_tmp1 = vec2.fromValues(0, 0),
-      adjustCenterOfMass_tmp2 = vec2.fromValues(0, 0),
-      adjustCenterOfMass_tmp3 = vec2.fromValues(0, 0),
-      adjustCenterOfMass_tmp4 = vec2.fromValues(0, 0);
+  static final vec2 adjustCenterOfMass_tmp1 = vec2.fromValues(0, 0);
+  static final vec2 adjustCenterOfMass_tmp2 = vec2.fromValues(0, 0);
+  static final vec2 adjustCenterOfMass_tmp3 = vec2.fromValues(0, 0);
+  static final vec2 adjustCenterOfMass_tmp4 = vec2.fromValues(0, 0);
 
   /**
    * Moves the shape offsets so their center of mass becomes the body center of mass.
@@ -862,9 +862,9 @@ class Body extends EventEmitter {
    */
 
   adjustCenterOfMass() {
-    vec2 offset_times_area = adjustCenterOfMass_tmp2,
-        sum = adjustCenterOfMass_tmp3,
-        cm = adjustCenterOfMass_tmp4;
+    vec2 offset_times_area = adjustCenterOfMass_tmp2;
+    vec2 cm = adjustCenterOfMass_tmp4;
+    vec2 sum = adjustCenterOfMass_tmp3;
     num totalArea = 0;
     vec2.set(sum, 0, 0);
 
@@ -985,8 +985,8 @@ class Body extends EventEmitter {
     this.wantsToSleep = false;
 
     int sleepState = this.sleepState;
-    num speedSquared = vec2.squaredLength(this.velocity) + pow(this.angularVelocity, 2),
-        speedLimitSquared = pow(this.sleepSpeedLimit, 2);
+    num speedSquared = vec2.squaredLength(this.velocity) + pow(this.angularVelocity, 2);
+    num speedLimitSquared = pow(this.sleepSpeedLimit, 2);
 
     // Add to idle time
     if (speedSquared >= speedLimitSquared) {

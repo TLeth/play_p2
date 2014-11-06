@@ -19,15 +19,14 @@ class EventEmitter {
 
   EventEmitter on(String type, EventFunc listener) {
     if (this._listeners == null) {
-      this._listeners = {
-      };
+      this._listeners = {};
     }
     Map<String, List<EventFunc>> listeners = this._listeners;
     if (!listeners.containsKey(type)) {
-      listeners[ type ] = new List<EventFunc>();
+      listeners[type] = new List<EventFunc>();
     }
-    if (!listeners[ type ].contains(listener)) {
-      listeners[ type ].add(listener);
+    if (!listeners[type].contains(listener)) {
+      listeners[type].add(listener);
     }
     return this;
   }
@@ -46,7 +45,7 @@ class EventEmitter {
     }
     Map<String, List<EventFunc>> listeners = this._listeners;
     if (listener != null) {
-      if (listeners.containsKey(type) && listeners[ type ].contains(listener)) {
+      if (listeners.containsKey(type) && listeners[type].contains(listener)) {
         return true;
       }
     } else {
@@ -71,9 +70,9 @@ class EventEmitter {
       return this;
     }
     Map<String, List<EventFunc>> listeners = this._listeners;
-    int index = listeners[ type ].indexOf(listener);
+    int index = listeners[type].indexOf(listener);
     if (index != -1) {
-      listeners[ type ].removeAt(index);
+      listeners[type].removeAt(index);
     }
     return this;
   }
@@ -91,12 +90,16 @@ class EventEmitter {
       return this;
     }
     Map<String, List<EventFunc>> listeners = this._listeners;
-    List<EventFunc> listenerArray = listeners[ event['type'] ];
+    List<EventFunc> listenerArray = listeners[event['type']];
     if (listenerArray != null) {
       event['target'] = this;
-      for (int i = 0, l = listenerArray.length; i < l; i ++) {
-        EventFunc listener = listenerArray[ i ];
-        listener(event);
+      {
+        int i = 0;
+        int l = listenerArray.length;
+        for ( ; i < l; i++) {
+          EventFunc listener = listenerArray[i];
+          listener(event);
+        }
       }
     }
     return this;

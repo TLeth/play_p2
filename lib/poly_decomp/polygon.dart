@@ -1,7 +1,7 @@
 part of poly_decomp;
 
 class Polygon {
-  List<vec2> vertices=new List<vec2>();
+  List<vec2> vertices = new List<vec2>();
 
   Polygon() {
   }
@@ -82,7 +82,7 @@ class Polygon {
 
   makeCCW() {
     num br = 0;
-    List<vec2>    v = this.vertices;
+    List<vec2> v = this.vertices;
 
     // find bottom right point
     for (int i = 1; i < this.vertices.length; ++i) {
@@ -117,8 +117,8 @@ class Polygon {
     return Point.right(this.at(i - 1), this.at(i), this.at(i + 1));
   }
 
-  static final List<vec2> tmpLine1 = new List<vec2>(),
-      tmpLine2 = new List<vec2>();
+  static final List<vec2> tmpLine1 = new List<vec2>();
+  static final List<vec2> tmpLine2 = new List<vec2>();
 
   /**
    * Check if two vertices in the polygon can see each other
@@ -129,9 +129,10 @@ class Polygon {
    */
 
   bool canSee(int a, int b) {
-    vec2 p, dist;
-    List<vec2> l1 = tmpLine1,
-        l2 = tmpLine2;
+    vec2 p;
+    vec2 dist;
+    List<vec2> l1 = tmpLine1;
+    List<vec2> l2 = tmpLine2;
 
     if (Point.leftOn(this.at(a + 1), this.at(a), this.at(b)) && Point.rightOn(this.at(a - 1), this.at(a), this.at(b))) {
       return false;
@@ -194,9 +195,9 @@ class Polygon {
    */
 
   List getCutEdges() {
-    List min = new List(),
-        tmp1 = new List<vec2>(),
-        tmp2 = new List<vec2>();
+    List min = new List();
+    List tmp2 = new List<vec2>();
+    List tmp1 = new List<vec2>();
     Polygon tmpPoly = new Polygon();
     num nDiags = double.MAX_FINITE;
 
@@ -316,7 +317,7 @@ class Polygon {
     num c2 = (a2 * q1.x) + (b2 * q1.y);
     num det = (a1 * b2) - (a2 * b1);
 
-    if (!Scalar.eq(det, 0, delta)) return new vec2(((b2 * c1) - (b1 * c2)) / det, ((a1 * c2) - (a2 * c1)) / det); else return new vec2(0.0,0.0);
+    if (!Scalar.eq(det, 0, delta)) return new vec2(((b2 * c1) - (b1 * c2)) / det, ((a1 * c2) - (a2 * c1)) / det); else return new vec2(0.0, 0.0);
   }
 
   /**
@@ -337,18 +338,24 @@ class Polygon {
     reflexVertices = reflexVertices != null ? reflexVertices : new List<vec2>();
     steinerPoints = steinerPoints != null ? steinerPoints : new List<vec2>();
 
-    vec2 upperInt = new vec2(0.0,0.0),
-        lowerInt = new vec2(0.0,0.0),
-        p = new vec2(0.0,0.0); // Points
-    num upperDist = 0,
-        lowerDist = 0,
-        d = 0,
-        closestDist = 0; // scalars
-    int upperIndex = 0,
-        lowerIndex = 0,
-        closestIndex = 0; // Integers
-    Polygon lowerPoly = new Polygon(),
-        upperPoly = new Polygon(); // polygons
+    vec2 upperInt = new vec2(0.0, 0.0);
+    vec2 p = new vec2(0.0, 0.0);
+    vec2 lowerInt = new vec2(0.0, 0.0); // Points
+    num upperDist = 0;
+    // Points
+    num closestDist = 0;
+    // Points
+    num d = 0;
+    // Points
+    num lowerDist = 0; // scalars
+    int upperIndex = 0;
+    // scalars
+    int closestIndex = 0;
+    // scalars
+    int lowerIndex = 0; // Integers
+    Polygon lowerPoly = new Polygon();
+    // Integers
+    Polygon upperPoly = new Polygon(); // polygons
     Polygon poly = this;
     List<vec2> v = this.vertices;
 

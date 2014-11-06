@@ -13,13 +13,13 @@ class RotationalSpring extends Spring {
   /// Apply the spring force to the connected bodies.
 
   applyForce() {
-    num k = this.stiffness,
-        d = this.damping,
-        l = this.restAngle;
-    Body bodyA = this.bodyA,
-        bodyB = this.bodyB;
-    num x = bodyB.angle - bodyA.angle,
-        u = bodyB.angularVelocity - bodyA.angularVelocity;
+    num k = this.stiffness;
+    num l = this.restAngle;
+    num d = this.damping;
+    Body bodyA = this.bodyA;
+    Body bodyB = this.bodyB;
+    num x = bodyB.angle - bodyA.angle;
+    num u = bodyB.angularVelocity - bodyA.angularVelocity;
 
     num torque = -k * (x - l) - d * u * 0;
 

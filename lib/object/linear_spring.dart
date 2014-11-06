@@ -2,10 +2,10 @@ part of p2;
 
 class LinearSpring extends Spring {
   /// Anchor for bodyA in local bodyA coordinates.
-  final vec2 localAnchorA=vec2.create();
+  final vec2 localAnchorA = vec2.create();
 
   /// Anchor for bodyB in local bodyB coordinates.
-  final vec2 localAnchorB=vec2.create();
+  final vec2 localAnchorB = vec2.create();
 
   /// Rest length of the spring.
   num restLength;
@@ -61,34 +61,34 @@ class LinearSpring extends Spring {
     this.bodyB.toWorldFrame(result, this.localAnchorB);
   }
 
-  static final vec2 applyForce_r = vec2.create(),
-      applyForce_r_unit = vec2.create(),
-      applyForce_u = vec2.create(),
-      applyForce_f = vec2.create(),
-      applyForce_worldAnchorA = vec2.create(),
-      applyForce_worldAnchorB = vec2.create(),
-      applyForce_ri = vec2.create(),
-      applyForce_rj = vec2.create(),
-      applyForce_tmp = vec2.create();
+  static final vec2 applyForce_r = vec2.create();
+  static final vec2 applyForce_r_unit = vec2.create();
+  static final vec2 applyForce_u = vec2.create();
+  static final vec2 applyForce_f = vec2.create();
+  static final vec2 applyForce_worldAnchorA = vec2.create();
+  static final vec2 applyForce_worldAnchorB = vec2.create();
+  static final vec2 applyForce_ri = vec2.create();
+  static final vec2 applyForce_rj = vec2.create();
+  static final vec2 applyForce_tmp = vec2.create();
 
   /// Apply the spring force to the connected bodies.
 
   applyForce() {
-    num k = this.stiffness,
-        d = this.damping,
-        l = this.restLength;
-    Body bodyA = this.bodyA,
-        bodyB = this.bodyB;
-    vec2 r = applyForce_r,
-        r_unit = applyForce_r_unit,
-        u = applyForce_u,
-        f = applyForce_f,
-        tmp = applyForce_tmp;
+    num k = this.stiffness;
+    num l = this.restLength;
+    num d = this.damping;
+    Body bodyA = this.bodyA;
+    Body bodyB = this.bodyB;
+    vec2 r = applyForce_r;
+    vec2 tmp = applyForce_tmp;
+    vec2 f = applyForce_f;
+    vec2 u = applyForce_u;
+    vec2 r_unit = applyForce_r_unit;
 
-    vec2 worldAnchorA = applyForce_worldAnchorA,
-        worldAnchorB = applyForce_worldAnchorB,
-        ri = applyForce_ri,
-        rj = applyForce_rj;
+    vec2 worldAnchorA = applyForce_worldAnchorA;
+    vec2 rj = applyForce_rj;
+    vec2 ri = applyForce_ri;
+    vec2 worldAnchorB = applyForce_worldAnchorB;
 
     // Get world anchors
     this.getWorldAnchorA(worldAnchorA);

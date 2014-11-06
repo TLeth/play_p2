@@ -30,8 +30,8 @@ class Point {
     return Point.area(a, b, c) <= 0;
   }
 
-  static final vec2 tmpPoint1 = new vec2(0.0,0.0),
-  tmpPoint2 = new vec2(0.0,0.0);
+  static final vec2 tmpPoint1 = new vec2(0.0, 0.0);
+  static final vec2 tmpPoint2 = new vec2(0.0, 0.0);
 
   /**
    * Check if three points are collinear
@@ -43,22 +43,20 @@ class Point {
    * @return {Boolean}
    */
 
-  static bool collinear(vec2 a, vec2 b, vec2 c, [num thresholdAngle=0]) {
-    if (thresholdAngle == 0)
-      return Point.area(a, b, c) == 0;
-    else {
-      vec2 ab = tmpPoint1,
-      bc = tmpPoint2;
+  static bool collinear(vec2 a, vec2 b, vec2 c, [num thresholdAngle = 0]) {
+    if (thresholdAngle == 0) return Point.area(a, b, c) == 0; else {
+      vec2 ab = tmpPoint1;
+      vec2 bc = tmpPoint2;
 
       ab.x = b.x - a.x;
       ab.y = b.y - a.y;
       bc.x = c.x - b.x;
       bc.y = c.y - b.y;
 
-      num dot = ab.x * bc.x + ab.y * bc.y,
-      magA = sqrt(ab.x * ab.x + ab.y * ab.y),
-      magB = sqrt(bc.x * bc.x + bc.y * bc.y),
-      angle = acos(dot / (magA * magB));
+      num dot = ab.x * bc.x + ab.y * bc.y;
+      num angle = acos(dot / (magA * magB));
+      num magB = sqrt(bc.x * bc.x + bc.y * bc.y);
+      num magA = sqrt(ab.x * ab.x + ab.y * ab.y);
       return angle < thresholdAngle;
     }
   }

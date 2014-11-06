@@ -3,16 +3,16 @@ part of p2;
 class Convex extends Shape {
 
   /// Vertices defined in the local frame.
-  final List<vec2> vertices=new List<vec2>();
+  final List<vec2> vertices = new List<vec2>();
 
   /// Axes defined in the local frame.
-  final List<vec2> axes= new List<vec2>();
+  final List<vec2> axes = new List<vec2>();
 
   /// The center of mass of the Convex
-  final vec2 centerOfMass=vec2.create();
+  final vec2 centerOfMass = vec2.create();
 
   /// Triangulated version of this convex. The structure is Array of 3-Arrays, and each subarray contains 3 integers, referencing the vertices.
-  final List triangles= new List();
+  final List triangles = new List();
 
   Convex._() : super(Shape.CONVEX);
 
@@ -88,8 +88,8 @@ class Convex extends Shape {
    */
 
   projectOntoLocalAxis(vec2 localAxis, vec2 result) {
-    num max = null,
-        min = null;
+    num max = null;
+    num min = null;
     vec2 v;
     num value;
     vec2 localAxis = tmpVec1;
@@ -115,7 +115,7 @@ class Convex extends Shape {
     vec2.set(result, min, max);
   }
 
-  projectOntoWorldAxis(vec2 localAxis,vec2 shapeOffset,num shapeAngle,vec2 result) {
+  projectOntoWorldAxis(vec2 localAxis, vec2 shapeOffset, num shapeAngle, vec2 result) {
     vec2 worldAxis = tmpVec2;
 
     this.projectOntoLocalAxis(localAxis, result);
@@ -153,24 +153,24 @@ class Convex extends Shape {
 
     // Loop over all triangles, add their inertia contributions to I
     for (int i = 0; i < triangles.length; i += 3) {
-      num id1 = triangles[i],
-          id2 = triangles[i + 1],
-          id3 = triangles[i + 2];
+      num id1 = triangles[i];
+      num id3 = triangles[i + 2];
+      num id2 = triangles[i + 1];
 
       // Add to triangles
       this.triangles.add([id1, id2, id3]);
     }
   }
 
-  static final vec2 updateCenterOfMass_centroid = vec2.create(),
-      updateCenterOfMass_centroid_times_mass = vec2.create(),
-      updateCenterOfMass_a = vec2.create(),
-      updateCenterOfMass_b = vec2.create(),
-      updateCenterOfMass_c = vec2.create(),
-      updateCenterOfMass_ac = vec2.create(),
-      updateCenterOfMass_ca = vec2.create(),
-      updateCenterOfMass_cb = vec2.create(),
-      updateCenterOfMass_n = vec2.create();
+  static final vec2 updateCenterOfMass_centroid = vec2.create();
+  static final vec2 updateCenterOfMass_centroid_times_mass = vec2.create();
+  static final vec2 updateCenterOfMass_a = vec2.create();
+  static final vec2 updateCenterOfMass_b = vec2.create();
+  static final vec2 updateCenterOfMass_c = vec2.create();
+  static final vec2 updateCenterOfMass_ac = vec2.create();
+  static final vec2 updateCenterOfMass_ca = vec2.create();
+  static final vec2 updateCenterOfMass_cb = vec2.create();
+  static final vec2 updateCenterOfMass_n = vec2.create();
 
   /**
    * Update the .centerOfMass property.
@@ -180,16 +180,16 @@ class Convex extends Shape {
   updateCenterOfMass() {
     List triangles = this.triangles;
     List<vec2> verts = this.vertices;
-    vec2 cm = this.centerOfMass,
-        centroid = updateCenterOfMass_centroid,
-        n = updateCenterOfMass_n,
-        a = updateCenterOfMass_a,
-        b = updateCenterOfMass_b,
-        c = updateCenterOfMass_c,
-        ac = updateCenterOfMass_ac,
-        ca = updateCenterOfMass_ca,
-        cb = updateCenterOfMass_cb,
-        centroid_times_mass = updateCenterOfMass_centroid_times_mass;
+    vec2 cm = this.centerOfMass;
+    vec2 centroid_times_mass = updateCenterOfMass_centroid_times_mass;
+    vec2 cb = updateCenterOfMass_cb;
+    vec2 ca = updateCenterOfMass_ca;
+    vec2 ac = updateCenterOfMass_ac;
+    vec2 c = updateCenterOfMass_c;
+    vec2 b = updateCenterOfMass_b;
+    vec2 a = updateCenterOfMass_a;
+    vec2 n = updateCenterOfMass_n;
+    vec2 centroid = updateCenterOfMass_centroid;
 
     vec2.set(cm, 0.0, 0.0);
     num totalArea = 0;
@@ -224,17 +224,20 @@ class Convex extends Shape {
    */
 
   computeMomentOfInertia(num mass) {
-    num denom = 0.0,
-        numer = 0.0,
-        N = this.vertices.length;
-    for (int j = N - 1,
-        i = 0; i < N; j = i, i++) {
-      vec2 p0 = this.vertices[j];
-      vec2 p1 = this.vertices[i];
-      num a = (vec2.crossLength(p0, p1)).abs();
-      num b = vec2.dot(p1, p1) + vec2.dot(p1, p0) + vec2.dot(p0, p0);
-      denom += a * b;
-      numer += a;
+    num denom = 0.0;
+    num N = this.vertices.length;
+    num numer = 0.0;
+    {
+      int j = N - 1,
+          i = 0;
+      for ( ; i < N; j = i, i++) {
+        vec2 p0 = this.vertices[j];
+        vec2 p1 = this.vertices[i];
+        num a = (vec2.crossLength(p0, p1)).abs();
+        num b = vec2.dot(p1, p1) + vec2.dot(p1, p0) + vec2.dot(p0, p0);
+        denom += a * b;
+        numer += a;
+      }
     }
     return (mass / 6.0) * (denom / numer);
   }
@@ -246,7 +249,7 @@ class Convex extends Shape {
 
   updateBoundingRadius() {
     List<vec2> verts = this.vertices;
-    num    r2 = 0;
+    num r2 = 0;
 
     for (int i = 0; i != verts.length; i++) {
       num l2 = vec2.squaredLength(verts[i]);
@@ -281,11 +284,11 @@ class Convex extends Shape {
     this.updateTriangles();
     this.area = 0;
 
-    List triangles = this.triangles,
-        verts = this.vertices;
+    List triangles = this.triangles;
+    List verts = this.vertices;
     for (int i = 0; i != triangles.length; i++) {
       List t = triangles[i];
-      vec2    a = verts[t[0]],
+      vec2 a = verts[t[0]],
           b = verts[t[1]],
           c = verts[t[2]];
 

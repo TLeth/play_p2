@@ -3,10 +3,10 @@ part of p2;
 /// Axis aligned bounding box class.
 class AABB {
   static final vec2 tmp = vec2.create();
-  final vec2  lowerBound= vec2.create();
-  final vec2  upperBound= vec2.create();
+  final vec2 lowerBound = vec2.create();
+  final vec2 upperBound = vec2.create();
 
-  AABB({vec2 lowerBound, vec2  upperBound}) {
+  AABB({vec2 lowerBound, vec2 upperBound}) {
     /**
      * The lower bound of the bounding box.
      * @property lowerBound
@@ -36,8 +36,8 @@ class AABB {
    */
 
   setFromPoints(List<vec2> points, [vec2 position, num angle = 0, int skinSize = 0]) {
-    vec2 l = this.lowerBound,
-        u = this.upperBound;
+    vec2 l = this.lowerBound;
+    vec2 u = this.upperBound;
 
 
     // Set to the first point
@@ -49,30 +49,31 @@ class AABB {
     vec2.copy(u, l);
 
     // Compute cosines and sines just once
-    num cosAngle = cos(angle),
-        sinAngle = sin(angle);
+    num cosAngle = cos(angle);
+    // Compute cosines and sines just once
+    num sinAngle = sin(angle);
     for (int i = 1; i < points.length; i++) {
       vec2 p = points[i];
 
       if (angle != 0) {
-        num x = p.x,
-            y = p.y;
+        num x = p.x;
+        num y = p.y;
         tmp.x = cosAngle * x - sinAngle * y;
         tmp.y = sinAngle * x + cosAngle * y;
         p = tmp;
       }
-        if (p.x > u.x) {
-          u.x = p.x;
-        }
-        if (p.x < l.x) {
-          l.x = p.x;
-        }
-        if (p.y > u.y) {
-          u.y = p.y;
-        }
-        if (p.y < l.y) {
-          l.y = p.y;
-        }
+      if (p.x > u.x) {
+        u.x = p.x;
+      }
+      if (p.x < l.x) {
+        l.x = p.x;
+      }
+      if (p.y > u.y) {
+        u.y = p.y;
+      }
+      if (p.y < l.y) {
+        l.y = p.y;
+      }
 //      for (int j = 0; j < 2; j++) {
 //        if (p[j] > u[j]) {
 //          u[j] = p[j];
@@ -115,7 +116,7 @@ class AABB {
    */
 
   extend(AABB aabb) {
-    
+
     num l = aabb.lowerBound.x;
     if (this.lowerBound.x > l) {
       this.lowerBound.x = l;
@@ -138,7 +139,7 @@ class AABB {
       this.upperBound.y = u;
     }
 //
-//    
+//
 //    // Loop over x and y
 //    int i = 2;
 //    while (i-- > 0) {
@@ -164,10 +165,10 @@ class AABB {
    */
 
   bool overlaps(AABB aabb) {
-    vec2 l1 = this.lowerBound,
-        u1 = this.upperBound,
-        l2 = aabb.lowerBound,
-        u2 = aabb.upperBound;
+    vec2 l1 = this.lowerBound;
+    vec2 u2 = aabb.upperBound;
+    vec2 l2 = aabb.lowerBound;
+    vec2 u1 = this.upperBound;
 
     //      l2        u2
     //      |---------|
